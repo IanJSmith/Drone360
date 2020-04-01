@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<arg name="namespace" default="drone"/>
+	<arg name="world_name" default="worlds/empty.world"/>
+	<arg name="cmd_timeout" default="0.5"/>
+
+	<!-- Vehicle Pose
+	<arg name="x" default="0.0"/>
+	<arg name="y" default="0.0"/>
+	<arg name="z" default="0.1"/>
+	<arg name="roll" default="0.0"/>
+	<arg name="pitch" default="0.0"/>
+	<arg name="yaw" default="0.0"/>
+	-->
+
+	<!-- Include drone description launch file
+	<include file="$(find drone_description)/launch/drone.launch">
+		<arg name="namespace" value="$(arg namespace)"/>
+	</include> -->
+
+	<group ns="$(arg namespace)">
+
+		<!-- Create the world -->
+		<include file="$(find gazebo_ros)/launch/empty_world.launch">
+			<arg name="world_name" value="$(arg world_name)"/>
+		</include>
+
+		<param name="robot_description" command="$(find xacro)/xacro.py '$(find drone_description)/urdf/drone.xacro'" />
+
+		<!-- Spawn the drone -->
+		<!-- look into making number of drones variable -->
+		<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
+			  args="-param robot_description -urdf -model drone" />
+
+		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="/drone" />
+
+		<!-- Load the joint controllers -->
+		<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" 
+			  args="--namespace=/drone joint_state_controller joint_motor_controller" />
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+			<!--<remap from="/joint_states" to="/drone/joint_states" />-->		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+
+		
+
+		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/drone
+		/drone/joint_state_controller
+		/drone/joint_fr_motor_controller
+		/drone/joint_fl_motor_controller
+		/drone/joint_bl_motor_controller
+		/drone/joint_br_motor_controller" />-->
+
+	</group>
+</launch>
+
+		
