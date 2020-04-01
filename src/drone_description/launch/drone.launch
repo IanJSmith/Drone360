@@ -4,7 +4,7 @@
 	
 	<group ns="$(arg namespace)">
 		
-		<param name="robot_description" command="$(find xacro)/xacro.py '$(find drone_description)/urdf/drone.xacro'" />
+		<param name="robot_description" command="$(find xacro)xacro '$(find drone_description)/urdf/drone.xacro'" />
 		
 		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
 			<!--<remap from="/joint_states" to="/drone/joint_states" />-->		

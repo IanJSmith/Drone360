@@ -4,11 +4,11 @@
 	<!-- ================================= -->
 	<!-- Define Gazebo tags for every link -->
 	<gazebo reference="base_link1">
-		<material>Gazebo/Red</material>
+		<material>Gazebo/Black</material>
 	</gazebo>
 	
 	<gazebo reference="base_link2">
-		<material>Gazebo/White</material>
+		<material>Gazebo/Black</material>
 	</gazebo>
 	
 	<gazebo reference="plate1">
@@ -16,7 +16,7 @@
 	</gazebo>
 	
 	<gazebo reference="plate2">
-		<material>Gazebo/Blue</material>
+		<material>Gazebo/Black</material>
 	</gazebo>
 	
 	<gazebo reference="cyl1">
@@ -76,19 +76,19 @@
     </gazebo>
 					
 	<gazebo reference="prop_front_right">
-		<material>Gazebo/Black</material>
+		<material>Gazebo/Gold</material>
 	</gazebo>
 	
 	<gazebo reference="prop_front_left">
-		<material>Gazebo/Black</material>
+		<material>Gazebo/Gold</material>
 	</gazebo>
 	
 	<gazebo reference="prop_back_right">
-		<material>Gazebo/Black</material>
+		<material>Gazebo/Gold</material>
 	</gazebo>
 	
 	<gazebo reference="prop_back_left">
-		<material>Gazebo/Black</material>
+		<material>Gazebo/Gold</material>
 	</gazebo>
 	
 	<!-- ================================= -->
