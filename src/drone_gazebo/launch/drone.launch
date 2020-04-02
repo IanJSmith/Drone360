@@ -1,7 +1,16 @@
+<?xml version="1.0"?>
 <launch>
 	
-	<arg name="namespace" default="drone"/>
+	<arg name="namespace" default="/drone"/>
 	<arg name="world_name" default="worlds/empty.world"/>
+
+	<!-- Drone Pose -->
+	<arg name="x" default="0.0"/>
+	<arg name="y" default="0.0"/>
+	<arg name="z" default="0.1"/>
+	<arg name="roll" default="0.0"/>
+	<arg name="pitch" default="0.0"/>
+	<arg name="yaw" default="0.0"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" value="$(arg world_name)" />
@@ -13,12 +22,15 @@
 	</include>
 
 	<include file="$(find drone_description)/launch/drone.launch">
-    <arg name="namespace" value="$(arg namespace)"/>
+    	<arg name="namespace" value="$(arg namespace)"/>
   	</include>
 	
 	<group ns="$(arg namespace)">
 		
-		<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model drone" />
+		<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
+			  args="-param robot_description -urdf -model drone 
+				  	-x $(arg x) -y $(arg y) -z $(arg z)
+	                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)" />
 		
 		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)" />
 		

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<arg name="namespace" default="/drone"/>
+	<arg name="world_name" default="worlds/empty.world"/>
+
+	<!-- Drone 1 Pose -->
+	<arg name="x1" default="0.0"/>
+	<arg name="y1" default="-0.3"/>
+	<arg name="z1" default="0.1"/>
+	<arg name="roll1" default="0.0"/>
+	<arg name="pitch1" default="0.0"/>
+	<arg name="yaw1" default="0.0"/>
+
+	<!-- Drone 2 Pose -->
+	<arg name="x2" default="0.0"/>
+	<arg name="y2" default="0.3"/>
+	<arg name="z2" default="0.1"/>
+	<arg name="roll2" default="0.0"/>
+	<arg name="pitch2" default="0.0"/>
+	<arg name="yaw2" default="0.0"/>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(arg world_name)" />
+		<arg name="paused" default="false" />
+		<arg name="use_sim_time" default="true" />
+		<arg name="gui" default="true" />
+		<arg name="headless" default="false" />
+		<arg name="debug" default="false" />
+	</include>
+
+	<include file="$(find drone_description)/launch/drone_double.launch">
+    	<arg name="namespace" value="$(arg namespace)"/>
+  	</include>
+	
+	<group ns="$(arg namespace)_1">
+
+		<include file="$(find drone_description)/launch/drone.launch">
+	    	<arg name="namespace" value="$(arg namespace)"/>
+	  	</include>
+		
+		<node name="spawn_urdf_1" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
+			  args="-param robot_description -urdf -model drone_1 
+			  		-x $(arg x1) -y $(arg y1) -z $(arg z1)
+	                -R $(arg roll1) -P $(arg pitch1) -Y $(arg yaw1)" />
+		
+		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)_1" />
+		
+		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/Kwad
+		/Kwad/joint_state_controller
+		/Kwad/joint_fr_motor_controller
+		/Kwad/joint_fl_motor_controller
+		/Kwad/joint_bl_motor_controller
+		/Kwad/joint_br_motor_controller" />-->
+		
+		<node name="control_spawner_1" pkg="controller_manager" type="spawner" 
+			  respawn="false" output="screen" 
+			  args="--namespace=$(arg namespace)_1 joint_state_controller joint_motor_controller" />
+		
+	</group>
+
+	<group ns="$(arg namespace)_2">
+		
+		<node name="spawn_urdf_2" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
+			  args="-param robot_description -urdf -model drone_2 
+			  		-x $(arg x2) -y $(arg y2) -z $(arg z2)
+	                -R $(arg roll2) -P $(arg pitch2) -Y $(arg yaw2)" />
+		
+		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)_2" />
+		
+		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/Kwad
+		/Kwad/joint_state_controller
+		/Kwad/joint_fr_motor_controller
+		/Kwad/joint_fl_motor_controller
+		/Kwad/joint_bl_motor_controller
+		/Kwad/joint_br_motor_controller" />-->
+		
+		<node name="control_spawner_2" pkg="controller_manager" type="spawner" 
+			  respawn="false" output="screen" 
+			  args="--namespace=$(arg namespace)_2 joint_state_controller joint_motor_controller" />
+		
+	</group>
+	
+		
+</launch>

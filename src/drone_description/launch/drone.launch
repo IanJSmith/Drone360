@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="namespace" default="drone"/>
+	<arg name="namespace" default="/drone"/>
 	
 	<group ns="$(arg namespace)">
 		
