@@ -129,10 +129,10 @@ def PID(roll, pitch, yaw, f):
 	if(esc_fl < 1100): esc_fl = 1100
 	
 	#Map the esc values to motor values
-	br_motor_vel = ((esc_br - 1500)/25) + 50
-	bl_motor_vel = ((esc_bl - 1500)/25) + 50
-	fr_motor_vel = ((esc_fr - 1500)/25) + 50
-	fl_motor_vel = ((esc_fl - 1500)/25) + 50
+	br_motor_vel = ((esc_br - 1500)/25) + 50 #FR
+	bl_motor_vel = ((esc_bl - 1500)/25) + 50 #BR
+	fr_motor_vel = ((esc_fr - 1500)/25) + 50 #FL
+	fl_motor_vel = ((esc_fl - 1500)/25) + 50 #BL
 	#----------------------------------------------------------------------------------------------------------------------------------
 	#Ignore this shit here.
 	'''

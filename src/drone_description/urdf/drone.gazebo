@@ -5,39 +5,50 @@
 	<!-- Define Gazebo tags for every link -->
 	<gazebo reference="base_link1">
 		<material>Gazebo/Black</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="base_link2">
 		<material>Gazebo/Black</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="plate1">
 		<material>Gazebo/Black</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="plate2">
 		<material>Gazebo/Black</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="cyl1">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="cyl2">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="cyl3">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="cyl4">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
-	<gazebo reference="arduino" />
+	<gazebo reference="arduino">
+		<turnGravityOff>true</turnGravityOff>
+	</gazebo>
 	
 	<gazebo reference="camera_link">
+		<turnGravityOff>true</turnGravityOff>
 		<sensor type="camera" name="camera1">
 			<update_rate>30</update_rate>
 			<camera name="head">
@@ -77,18 +88,22 @@
 					
 	<gazebo reference="prop_front_right">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="prop_front_left">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="prop_back_right">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<gazebo reference="prop_back_left">
 		<material>Gazebo/Gold</material>
+		<turnGravityOff>true</turnGravityOff>
 	</gazebo>
 	
 	<!-- ================================= -->
