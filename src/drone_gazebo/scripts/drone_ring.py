@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 from drone_teleport import teleport
-import rospy, sys
+import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState
+from sensor_msgs.msg import Image
 
 x = 5
 y = -0.75
@@ -14,10 +15,18 @@ namespace = 'drone'
 wall = 1
 count = 0
 lap = 0
+drone_image = Image()
+bag = rosbag.Bag('image_bag', 'w')
+
+def image_callback(Image):
+
+	global drone_image
+
+	drone_image = Image
 
 def drone_ring(self):
 
-	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap
+	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap, drone_image, bag
 
 	if wall == 1:
 		if y > 5.45:
@@ -57,19 +66,22 @@ def drone_ring(self):
 			x = x + 0.05
 		else:
 			if count == 10:
-				wall = 1
+				# wall = 1
 				count = 0
 				lap = lap + 1
+				bag.close()
 			else:
 				yaw = yaw + 0.157
 				count = count + 1
 
 	teleport(namespace, x, y, z, roll, pitch, yaw)
+	bag.write('drone', drone_image)
 
 if __name__ == '__main__':
     try:
     	rospy.init_node('determine_pose')
         rospy.Timer(rospy.Duration(0.01), drone_ring)
+        rospy.Subscriber("drone/camera1/image_raw", Image, image_callback)
         rospy.spin()
     except rospy.ROSInterruptException:
         pass

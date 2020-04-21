@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from drone_teleport import teleport
-import rospy, sys
+import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState
 
 x = 5
