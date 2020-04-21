@@ -15,7 +15,7 @@ wall = 1
 count = 0
 lap = 0
 
-def drone_ring(self):
+def drone_ring():
 
 	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap
 
@@ -66,10 +66,24 @@ def drone_ring(self):
 
 	teleport(namespace, x, y, z, roll, pitch, yaw)
 
+def drone_layer(self):
+
+	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap
+
+	if z > 3:
+		z = 0.1
+
+	elif lap > 0:
+		z = z + 0.1
+		drone_ring()
+		lap = 0
+	else:
+		drone_ring()
+
 if __name__ == '__main__':
     try:
     	rospy.init_node('determine_pose')
-        rospy.Timer(rospy.Duration(0.01), drone_ring)
+        rospy.Timer(rospy.Duration(0.001), drone_layer)
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
