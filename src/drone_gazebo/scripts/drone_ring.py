@@ -86,7 +86,7 @@ def drone_ring_callback(self):
 if __name__ == '__main__':
     try:
     	rospy.init_node('determine_pose')
-        rospy.Timer(rospy.Duration(0.01), drone_ring_callback)
+        rospy.Timer(rospy.Duration(0.1), drone_ring_callback)
         rospy.Subscriber("drone/camera1/image_raw", Image, image_callback)
         rospy.spin()
     except rospy.ROSInterruptException:
