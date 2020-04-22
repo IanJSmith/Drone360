@@ -22,7 +22,13 @@ def image_callback(Image):
 
 	global drone_image
 
-	drone_image = Image
+	drone_image.header = Image.header
+	drone_image.height = Image.height
+	drone_image.width = Image.width
+	drone_image.encoding = Image.encoding
+	drone_image.is_bigendian = Image.is_bigendian
+	drone_image.step = Image.step
+	drone_image.data = Image.data
 
 def drone_ring(self):
 
