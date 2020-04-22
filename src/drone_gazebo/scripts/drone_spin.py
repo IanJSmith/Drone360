@@ -5,8 +5,8 @@ import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState
 from sensor_msgs.msg import Image
 
-x = 5
-y = -0.75
+x = 2.5
+y = 2.25
 z = 0.1
 roll = 0
 pitch = 0
@@ -33,52 +33,11 @@ def drone_ring_callback(self):
 
 	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap, drone_image, bag
 
-	if wall == 1:
-		if y > 5.45:
-			if count == 10:
-				wall = 2
-				count = 0
-			else:
-				yaw = yaw + 0.157
-				count = count + 1
-		elif y < 5.45:
-			y = y + 0.05
+	if yaw < 6.28:
+		yaw = yaw + 0.087265
 
-	elif wall == 2:
-		if x < 0.55:
-			if count == 10:
-				wall = 3
-				count = 0
-			else:
-				yaw = yaw + 0.157
-				count = count + 1
-		elif x > 0.55:
-			x = x - 0.05
-
-	elif wall == 3:
-		if y < -0.70:
-			if count == 10:
-				wall = 4
-				count = 0
-			else:
-				yaw = yaw + 0.157
-				count = count + 1
-		elif y > -0.70:
-			y = y - 0.05
-
-	elif wall == 4:
-		if x < 4.95:
-			x = x + 0.05
-		else:
-			if count == 10:
-				# wall = 1
-				count = 0
-				lap = lap + 1
-				bag.close()
-			else:
-				yaw = yaw + 0.157
-				count = count + 1
-
+	else:
+		yaw = 0
 
 	teleport(namespace, x, y, z, roll, pitch, yaw)
 	bag.write('/drone', drone_image)
