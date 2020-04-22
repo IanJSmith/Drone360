@@ -4,7 +4,6 @@ from drone_teleport import teleport
 import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState
 from sensor_msgs.msg import Image
-from std_msgs.msg import Int32, String
 
 x = 5
 y = -0.75
@@ -25,15 +24,10 @@ def image_callback(Image):
 
 	global drone_image
 
-	drone_image.header = Image.header
-	drone_image.height = Image.height
-	drone_image.width = Image.width
-	drone_image.encoding = Image.encoding
-	drone_image.is_bigendian = Image.is_bigendian
-	drone_image.step = Image.step
-	drone_image.data = Image.data
+	drone_image = Image
 
-def drone_ring(namespace, )
+# def drone_ring(namespace, x, y, z, roll, pitch, yaw, lap):
+# 	global 
 
 def drone_ring_callback(self):
 
@@ -86,12 +80,9 @@ def drone_ring_callback(self):
 					yaw = yaw + 0.157
 					count = count + 1
 
-	s = String()
-	s.data = 'foo'
-	bag.write('chatter', s)
 
 	teleport(namespace, x, y, z, roll, pitch, yaw)
-	bag.write('drone', drone_image)
+	bag.write('/drone', drone_image)
 
 if __name__ == '__main__':
     try:
