@@ -21,7 +21,7 @@
 	<arg name="yaw2" default="0.0"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="world_name" value="$(arg world_name)" />
+		<arg name="world_name" value="$(find drone_gazebo)/worlds/drone_crazy.world" />
 		<arg name="paused" default="false" />
 		<arg name="use_sim_time" default="true" />
 		<arg name="gui" default="true" />
@@ -32,6 +32,8 @@
 	<include file="$(find drone_description)/launch/drone_double.launch">
     	<arg name="namespace" value="$(arg namespace)"/>
   	</include>
+
+  	<param name="drone_number" type="int" value="2" />
 	
 	<group ns="$(arg namespace)_1">
 
@@ -45,13 +47,6 @@
 	                -R $(arg roll1) -P $(arg pitch1) -Y $(arg yaw1)" />
 		
 		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)_1" />
-		
-		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/Kwad
-		/Kwad/joint_state_controller
-		/Kwad/joint_fr_motor_controller
-		/Kwad/joint_fl_motor_controller
-		/Kwad/joint_bl_motor_controller
-		/Kwad/joint_br_motor_controller" />-->
 		
 		<node name="control_spawner_1" pkg="controller_manager" type="spawner" 
 			  respawn="false" output="screen" 
@@ -67,13 +62,6 @@
 	                -R $(arg roll2) -P $(arg pitch2) -Y $(arg yaw2)" />
 		
 		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)_2" />
-		
-		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/Kwad
-		/Kwad/joint_state_controller
-		/Kwad/joint_fr_motor_controller
-		/Kwad/joint_fl_motor_controller
-		/Kwad/joint_bl_motor_controller
-		/Kwad/joint_br_motor_controller" />-->
 		
 		<node name="control_spawner_2" pkg="controller_manager" type="spawner" 
 			  respawn="false" output="screen" 
