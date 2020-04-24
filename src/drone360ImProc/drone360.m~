@@ -1,0 +1,126 @@
+
+folder_frame_string = 'drone_images/frame';
+
+filename = [folder_frame_string sprintf('%04d',1) '.jpg'];
+drone_frame = imread(filename);
+[im_rows,im_cols,depth] = size(drone_frame);
+
+panorama = im2double(drone_frame);
+old_frame = im2double(drone_frame);
+
+%transformations = [1 ; -1];
+transformations = -1;
+
+for i = 2:324
+    transformations1 = transformations;
+    filename = [folder_frame_string sprintf('%04d',i) '.jpg'];
+    current_frame = im2double(imread(filename));
+    dx = 0;
+    
+%     A = [1 0 0; 0 1 0; dx 0 1];  
+%     tform = affine2d(A);
+%     sameAsInput = affineOutputView(size(current_frame),tform,'BoundsStyle','SameAsInput');
+%     frameTform = imwarp(current_frame, tform,'cubic','FillValues',zeros(1,channels),'OutputView',sameAsInput);%, 'bilinear', 'XData', [1 width], 'YData', [1 height],'FillValues', zeros(1,channels));
+
+    error = immse(current_frame,old_frame);
+    
+    min = error;
+    scale = 1;
+    
+    dx_min = 0;
+    
+    while (min ~= 0 && scale <= 10)
+        %for j = 1:2
+
+            A = [1 0 0; 0 1 0; transformations1 0 1];  
+            tform = affine2d(A);
+            sameAsInput = affineOutputView(size(current_frame),tform,'BoundsStyle','SameAsInput');
+            current_Tform = imwarp(current_frame, tform,'cubic','FillValues',zeros(1,depth),'OutputView',sameAsInput);%, 'bilinear', 'XData', [1 width], 'YData', [1 height],'FillValues', zeros(1,channels));
+            tempError = immse(old_frame,current_Tform);
+
+            if tempError <= min
+                dx_min = transformations1(j);
+                min = tempError;
+            end
+            
+        %end
+        scale = scale+1;
+        transformations1 = transformations*scale + dx_min;
+        j = 1;
+        
+    end
+    
+    if dx_min ~= 0
+        padding = current_frame(:,0:abs(dx_min),:);
+        panorama = cat(2,panorama,padding); 
+    end
+    
+    old_frame = current_frame;
+    
+end
+
+
+
+%% 
+
+
+frame_avg = im2double(read(vidobj, 1));
+
+[height, width, channels] = size(frame_avg);  
+
+%Need a new approach, try making a 2x8 array of all 8 directions, go
+%through all of them and find min error. If none of decrease the error,
+%then scale the matrix by a factor n which increases everytime you go
+%through the matrix
+transformations = [0 1 ; 1 0 ; 1 1; 0 -1; -1 0; -1 -1; -1 1; 1 -1];
+for i = 1 : 30       
+    transformations1 = transformations;
+    frame = im2double(read(vidobj, i)); 
+    dx = 0; % pixels  
+    dy = 0; % pixels  
+    A = [1 0 0; 0 1 0; dx dy 1];  
+    tform = affine2d(A);
+    sameAsInput = affineOutputView(size(frame),tform,'BoundsStyle','SameAsInput');
+    frameTform = imwarp(frame, tform,'cubic','FillValues',zeros(1,channels),'OutputView',sameAsInput);%, 'bilinear', 'XData', [1 width], 'YData', [1 height],'FillValues', zeros(1,channels));
+    
+    error = immse(frame_avg,frame);
+    
+    min = error;
+    scale = 1;
+        
+    dx_min = 0;
+    dy_min = 0;
+    
+    while (min ~= 0 && scale <= 5)
+        for j = 1:8
+
+            A = [1 0 0; 0 1 0; transformations1(j,1) transformations1(j,2) 1];  
+            tform = affine2d(A);
+            sameAsInput = affineOutputView(size(frame),tform,'BoundsStyle','SameAsInput');
+            newTform = imwarp(frame, tform,'cubic','FillValues',zeros(1,channels),'OutputView',sameAsInput);%, 'bilinear', 'XData', [1 width], 'YData', [1 height],'FillValues', zeros(1,channels));
+            tempError = immse(frame_avg,newTform);
+
+            if tempError <= min
+                dx_min = transformations1(j,1);
+                dy_min = transformations1(j,2);
+                min = tempError;
+            end
+        end
+        scale = scale+1;
+        transformations1 = transformations*scale + [dx_min+dy_min];
+        j = 1;
+    end
+    
+    A = [1 0 0; 0 1 0; dx_min dy_min 1];
+    tform = affine2d(A);
+    sameAsInput = affineOutputView(size(frame),tform,'BoundsStyle','SameAsInput');
+
+    newTform = imwarp(frame, tform,'cubic','FillValues', zeros(1,channels),'OutputView',sameAsInput);
+
+    frame_avg = (i-1)/i*frame_avg + 1/i*newTform;    
+end
+
+figure
+imshow(frame_avg);
+title('Sky Noisy Aligned Average Frame')
+saveas(gcf,'Sky_Noisy Aligned Average Frame.png');
