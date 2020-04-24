@@ -12,8 +12,10 @@
 	<arg name="pitch" default="0.0"/>
 	<arg name="yaw" default="0.0"/>
 
+	<param name="drone_number" type="int" value="1" />
+
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="world_name" value="$(find drone_gazebo)/worlds/drone_house.world" />
+		<arg name="world_name" value="$(find drone_gazebo)/worlds/drone_crazy.world" />
 		<arg name="paused" default="false" />
 		<arg name="use_sim_time" default="true" />
 		<arg name="gui" default="true" />
@@ -33,13 +35,6 @@
 	                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)" />
 		
 		<rosparam file="$(find drone_gazebo)/config/drone_control.yaml" command="load" ns="$(arg namespace)" />
-		
-		<!--<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="namespace=/Kwad
-		/Kwad/joint_state_controller
-		/Kwad/joint_fr_motor_controller
-		/Kwad/joint_fl_motor_controller
-		/Kwad/joint_bl_motor_controller
-		/Kwad/joint_br_motor_controller" />-->
 		
 		<node name="control_spawner" pkg="controller_manager" type="spawner" 
 			  respawn="false" output="screen" 
