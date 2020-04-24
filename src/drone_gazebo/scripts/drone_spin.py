@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# This was just a test script to spin the drone in the center of the room for images
+
 from drone_teleport import teleport
 import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState

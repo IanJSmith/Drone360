@@ -5,16 +5,16 @@
 	<arg name="world_name" default="worlds/empty.world"/>
 
 	<!-- Drone 1 Pose -->
-	<arg name="x1" default="0.0"/>
-	<arg name="y1" default="-0.3"/>
+	<arg name="x1" default="4.25"/>
+	<arg name="y1" default="-0.25"/>
 	<arg name="z1" default="0.1"/>
 	<arg name="roll1" default="0.0"/>
 	<arg name="pitch1" default="0.0"/>
 	<arg name="yaw1" default="0.0"/>
 
 	<!-- Drone 2 Pose -->
-	<arg name="x2" default="0.0"/>
-	<arg name="y2" default="0.3"/>
+	<arg name="x2" default="0.75"/>
+	<arg name="y2" default="5.25"/>
 	<arg name="z2" default="0.1"/>
 	<arg name="roll2" default="0.0"/>
 	<arg name="pitch2" default="0.0"/>

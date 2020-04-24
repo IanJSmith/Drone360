@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# This script is used to move the drone around the room
+# The namespace of the model, and desired xyz rpy position and orientation are passed to the function
+
 import rospy, sys
 
 from gazebo_msgs.msg import ModelState

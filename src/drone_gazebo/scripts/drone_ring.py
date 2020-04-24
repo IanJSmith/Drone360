@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# A script to run a single drone around a single ring of the room
+
 from drone_teleport import teleport
 import rospy, sys, rosbag
 from gazebo_msgs.msg import ModelState
@@ -15,24 +17,6 @@ yaw = 0
 wall = 1
 count = 0
 lap = 0
-
-# Drone_1 Start
-x_1 = 4.5
-y_1 = -0.25
-z_1 = 0.1
-yaw_1 = 0
-wall_1 = 1
-count_1 = 0
-lap_1 = 0
-
-# Drone_2 Start
-x_2 = 0.75
-y_2 = 5.25
-z_2 = 0.1
-yaw_2 = 3.14
-wall_2 = 3
-count_2 = 0
-lap_2 = 0
 
 namespace = 'drone'
 corner_tick = 0.0785
@@ -50,7 +34,8 @@ def image_callback(Image):
 def drone_ring_callback(self):
 
 	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap, drone_image, bag
-
+	
+	# Moves along the first wall from y = -0.25 to y = 5.25, then rounds corner
 	if wall == 1:
 		if y > 5.2:
 			if count == 20:
@@ -62,6 +47,7 @@ def drone_ring_callback(self):
 		elif y < 5.2:
 			y = y + movement_increment
 
+	# Moves along the second wall from x = 4.5 to x = 0.75, then rounds corner
 	elif wall == 2:
 		if x < 0.80:
 			if count == 20:
@@ -73,6 +59,7 @@ def drone_ring_callback(self):
 		elif x > 0.80:
 			x = x - movement_increment
 
+	# Moves along the third wall from y = 5.25 to y = -0.5, then rounds corner
 	elif wall == 3:
 		if y < -0.45:
 			if count == 20:
@@ -84,6 +71,8 @@ def drone_ring_callback(self):
 		elif y > -0.45:
 			y = y - movement_increment
 
+	# Moves along the fourth wall from x = 0.75 to x = 4.5, then rounds corner
+	# This one just goes for one loop, and closes the bag
 	elif wall == 4:
 		if x < 4.45:
 			x = x + movement_increment
