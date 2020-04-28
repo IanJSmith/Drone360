@@ -46,6 +46,7 @@ lap_2 = 0
 # Controls how fine the movement and corner turn is
 corner_tick = 0.0785
 movement_increment = 0.05
+room_height = 3
 
 # flip is used to toggle what state each of the dual drones are in
 # A ring is determined as four walls:
@@ -276,7 +277,7 @@ def drone_ring(namespace):
 def drone_layer(self):
 
 	# Single Drone setup
-	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap, flip, bag
+	global x, y, z, roll, pitch, yaw, namespace, wall, count, lap, flip, bag, room_height
 	# Double Drone setup
 	global x_1, y_1, z_1, yaw_1, wall_1, count_1, lap_1
 	global x_2, y_2, z_2, yaw_2, wall_2, count_2, lap_2
@@ -287,7 +288,7 @@ def drone_layer(self):
 
 	if drones == 1:
 		# If over the max height of room, reset the height and close the bag
-		if z > 3:
+		if z > room_height:
 			z = 0.1
 			bag.close()
 
@@ -305,7 +306,7 @@ def drone_layer(self):
 
 	if drones == 2:
 		# Waits for both drones to reach max height (they wont be concurrent), resets the height and closes the bag
-		if z_1 > 3 and z_2 > 3:
+		if z_1 > room_height and z_2 > room_height:
 			z_1 = 0.1
 			z_2 = 0.1
 			bag.close()
