@@ -18,9 +18,9 @@ If one wants to run a single ring with two drones, use the above drone_layers.py
 To play a recorded rosbag (image_bag) and record a single lap:
 1. In one terminal, start roscore
 roscore
-2. In another terminal, run the following command (image_view package must be downloaded):
+2. In another terminal (Inside a temp folder), run the following command (image_view package must be downloaded):
 rosrun image_view extract_images _sec_per_frame:=0.1 image:=/drone_1_lap_1
-3. In a final terminal (Inside a temp folder), run the following command:
+3. In a final terminal, run the following command:
 rosbag play image_bag
 
 Change /drone_1_lap_1 to whatever lap or topic to record that topic
